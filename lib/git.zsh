@@ -5,8 +5,11 @@ function git_prompt_info() {
     ref=$(command git rev-parse --short HEAD 2> /dev/null) || return 0
     if [[ $ref =~ ^[0-9A-Fa-f]{7}$ ]] ; then
       ref=$( command git branch --contains $ref | perl -ne '/([^ ]*(?=\)))/; print "$1\n";')
+      echo "$ZSH_THEME_GIT_PROMPT_PREFIX${ref}$(parse_git_dirty)$ZSH_THEME_GIT_PROMPT_SUFFIX"
+    else
+      echo "$ZSH_THEME_GIT_PROMPT_PREFIX${ref#refs/heads/}$(parse_git_dirty)$ZSH_THEME_GIT_PROMPT_SUFFIX"
     fi
-    echo "$ZSH_THEME_GIT_PROMPT_PREFIX${ref}$(parse_git_dirty)$ZSH_THEME_GIT_PROMPT_SUFFIX"
+
   fi
 }
 
